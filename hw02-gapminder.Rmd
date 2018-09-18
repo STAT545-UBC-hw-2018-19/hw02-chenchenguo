@@ -1,0 +1,107 @@
+---
+title: "Hw02_gapminder"
+author: "Chenchen Guo"
+date: "2018 Sep 18th"
+output: 
+  html_document:
+    keep_md: true
+---
+
+###Bring data package gapminder and tidyverse meta-package in
+```{r}
+library(gapminder)
+library(tidyverse)
+library(ggplot2)
+```
+
+
+###Smell test the data
+
+```{r}
+
+typeof(gapminder)
+head(gapminder)
+str(gapminder)
+summary(gapminder)
+ncol(gapminder)
+nrow(gapminder)
+length(gapminder)
+length(gapminder$country)
+ls(gapminder)
+
+typeof(gapminder$country)
+typeof(gapminder$continent)
+typeof(gapminder$year)
+typeof(gapminder$lifeExp)
+typeof(gapminder$pop)
+typeof(gapminder$gdpPercap)
+
+```
+
+
+###Individual variables
+```{r}
+ye<- gapminder$year
+range(ye)
+length(ye)
+summary(ye)
+arrange(gapminder,year)
+
+life<- gapminder$lifeExp
+range(life)
+length(life)
+summary(life)
+
+po<- gapminder$pop
+range(po)
+length(po)
+summary(po)
+
+gdp<-gapminder$gdpPercap
+range(gdp)
+length(gdp)
+summary(gdp)
+
+hist(gapminder$lifeExp, breaks = 12, col="grey", xlab = "LifeExpectency", main="Life expectency distribution")
+
+hist(gapminder$gdpPercap, breaks = 12, col = "light blue", xlab = "GDP per Cap", main = "GDPpercap distribution")
+
+
+```
+
+
+###Explore various plot types
+
+```{r}
+
+plot(gapminder$gdpPercap, gapminder$lifeExp, xlab ="GDPperCap", ylab = "Life Expectency", main="Scatter plot of GDPper and LifeExp")
+can<- filter(gapminder, country=="Canada")
+plot(can$year,can$lifeExp, xlab = "Year", ylab = "Life expectancy", main = "Life expectancy tendency of Canada")
+
+plot(can$year,can$gdpPercap, xlab = "Year", ylab = "GDPperCap", main = "GDPpercap tendency of Canada")
+
+asia<- filter(gapminder, continent=="Asia")
+
+hist(asia$lifeExp,breaks = 12, col="grey", xlab = "LifeExpectency ", main="Life expectency distribution of Asia")
+
+afri<- filter(gapminder,continent=="Africa")
+ls(afri)
+hist(afri$lifeExp,breaks = 12, col="grey", xlab = "LifeExpectency ", main="Life expectency distribution of Africa")
+```
+
+###Use filter(), select() and %>%
+```{r}
+
+
+gapminder %>% 
+  select(pop,gdpPercap) %>% 
+  filter(pop>2.960e+07 & gdpPercap>1000) %>% 
+  plot(xlab="Population",ylab = "GDPpercap")
+
+
+qplot(gapminder$lifeExp, gapminder$gdpPercap, xlab = "Life expectancy", ylab = "GDPpercap")
+  
+
+
+
+```
