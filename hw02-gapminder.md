@@ -519,7 +519,7 @@ a
 ```
 
 ```r
-# The correct way of filter out this
+# This is the correct way to filter out this through filter function
 b<- gapminder %>% 
     filter(country=="Rwanda"|country=="Afghanistan")
 b
