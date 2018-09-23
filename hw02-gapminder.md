@@ -10,23 +10,12 @@ output:
 ###Bring data package gapminder and tidyverse meta-package in
 
 ```r
-library(gapminder)
-```
-
-```
-## Warning: package 'gapminder' was built under R version 3.4.4
-```
-
-```r
+# Load data and function package
 library(tidyverse)
 ```
 
 ```
-## Warning: package 'tidyverse' was built under R version 3.4.4
-```
-
-```
-## -- Attaching packages ------------------------------------------------------------------------------ tidyverse 1.2.1 --
+## -- Attaching packages -------------------------------------------------------------------------------------------- tidyverse 1.2.1 --
 ```
 
 ```
@@ -37,37 +26,13 @@ library(tidyverse)
 ```
 
 ```
-## Warning: package 'ggplot2' was built under R version 3.4.4
-```
-
-```
-## Warning: package 'tidyr' was built under R version 3.4.4
-```
-
-```
-## Warning: package 'readr' was built under R version 3.4.4
-```
-
-```
-## Warning: package 'purrr' was built under R version 3.4.4
-```
-
-```
-## Warning: package 'dplyr' was built under R version 3.4.4
-```
-
-```
-## Warning: package 'forcats' was built under R version 3.4.4
-```
-
-```
-## -- Conflicts --------------------------------------------------------------------------------- tidyverse_conflicts() --
+## -- Conflicts ----------------------------------------------------------------------------------------------- tidyverse_conflicts() --
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()
 ```
 
 ```r
-library(ggplot2)
+library(gapminder)
 ```
 
 
@@ -75,6 +40,7 @@ library(ggplot2)
 
 
 ```r
+# Type of whole data set 
 typeof(gapminder)
 ```
 
@@ -83,6 +49,98 @@ typeof(gapminder)
 ```
 
 ```r
+# Class information of gapminder
+ls(gapminder)
+```
+
+```
+## [1] "continent" "country"   "gdpPercap" "lifeExp"   "pop"       "year"
+```
+
+```r
+# Column and row length of gapminder showing in two ways
+ncol(gapminder)
+```
+
+```
+## [1] 6
+```
+
+```r
+nrow(gapminder)
+```
+
+```
+## [1] 1704
+```
+
+```r
+length(gapminder)
+```
+
+```
+## [1] 6
+```
+
+```r
+length(gapminder$country)
+```
+
+```
+## [1] 1704
+```
+
+```r
+# Data type of each variable
+typeof(gapminder$country)
+```
+
+```
+## [1] "integer"
+```
+
+```r
+typeof(gapminder$continent)
+```
+
+```
+## [1] "integer"
+```
+
+```r
+typeof(gapminder$year)
+```
+
+```
+## [1] "integer"
+```
+
+```r
+typeof(gapminder$lifeExp)
+```
+
+```
+## [1] "double"
+```
+
+```r
+typeof(gapminder$pop)
+```
+
+```
+## [1] "integer"
+```
+
+```r
+typeof(gapminder$gdpPercap)
+```
+
+```
+## [1] "double"
+```
+
+```r
+# Basic information of gapminder data set
 head(gapminder)
 ```
 
@@ -135,98 +193,11 @@ summary(gapminder)
 ## 
 ```
 
-```r
-ncol(gapminder)
-```
-
-```
-## [1] 6
-```
-
-```r
-nrow(gapminder)
-```
-
-```
-## [1] 1704
-```
-
-```r
-length(gapminder)
-```
-
-```
-## [1] 6
-```
-
-```r
-length(gapminder$country)
-```
-
-```
-## [1] 1704
-```
-
-```r
-ls(gapminder)
-```
-
-```
-## [1] "continent" "country"   "gdpPercap" "lifeExp"   "pop"       "year"
-```
-
-```r
-typeof(gapminder$country)
-```
-
-```
-## [1] "integer"
-```
-
-```r
-typeof(gapminder$continent)
-```
-
-```
-## [1] "integer"
-```
-
-```r
-typeof(gapminder$year)
-```
-
-```
-## [1] "integer"
-```
-
-```r
-typeof(gapminder$lifeExp)
-```
-
-```
-## [1] "double"
-```
-
-```r
-typeof(gapminder$pop)
-```
-
-```
-## [1] "integer"
-```
-
-```r
-typeof(gapminder$gdpPercap)
-```
-
-```
-## [1] "double"
-```
-
 
 ###Individual variables
 
 ```r
+# range and size information of class-year
 ye<- gapminder$year
 range(ye)
 ```
@@ -278,6 +249,7 @@ arrange(gapminder,year)
 ```
 
 ```r
+# range and size information of life-year
 life<- gapminder$lifeExp
 range(life)
 ```
@@ -304,6 +276,7 @@ summary(life)
 ```
 
 ```r
+# range and size information of class-population
 po<- gapminder$pop
 range(po)
 ```
@@ -330,6 +303,7 @@ summary(po)
 ```
 
 ```r
+# range and size information of class-gdp
 gdp<-gapminder$gdpPercap
 range(gdp)
 ```
@@ -356,6 +330,7 @@ summary(gdp)
 ```
 
 ```r
+# Distribution of lifeExp and gdpPercap
 hist(gapminder$lifeExp, breaks = 12, col="grey", xlab = "LifeExpectency", main="Life expectency distribution")
 ```
 
@@ -372,12 +347,19 @@ hist(gapminder$gdpPercap, breaks = 12, col = "light blue", xlab = "GDP per Cap",
 
 
 ```r
-plot(gapminder$gdpPercap, gapminder$lifeExp, xlab ="GDPperCap", ylab = "Life Expectency", main="Scatter plot of GDPper and LifeExp")
+# Relation between lifeExp and gdpPercap
+ggplot(gapminder, aes(gdpPercap, lifeExp))+
+  geom_point()+
+  xlab("GDPpercap")+
+  ylab("LifeExp")+
+  ggtitle("Scatter plot of GDP versus LifeExp")
 ```
 
 ![](hw02-gapminder_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
 
 ```r
+# Two ways of Filter out Canada and analysis on data of Canada 
+# Way one: Scatter plot
 can<- filter(gapminder, country=="Canada")
 plot(can$year,can$lifeExp, xlab = "Year", ylab = "Life expectancy", main = "Life expectancy tendency of Canada")
 ```
@@ -391,27 +373,101 @@ plot(can$year,can$gdpPercap, xlab = "Year", ylab = "GDPperCap", main = "GDPperca
 ![](hw02-gapminder_files/figure-html/unnamed-chunk-4-3.png)<!-- -->
 
 ```r
-asia<- filter(gapminder, continent=="Asia")
-
-hist(asia$lifeExp,breaks = 12, col="grey", xlab = "LifeExpectency ", main="Life expectency distribution of Asia")
+# Way two
+gapminder %>% 
+  filter(country=="Canada") %>% 
+  ggplot(aes(year, lifeExp))+
+  geom_point()+
+  xlab("Year")+
+  ylab("LifeExp")+
+  ggtitle("Life Expentancy tendency of Cananda")
 ```
 
 ![](hw02-gapminder_files/figure-html/unnamed-chunk-4-4.png)<!-- -->
 
 ```r
-afri<- filter(gapminder,continent=="Africa")
-ls(afri)
-```
-
-```
-## [1] "continent" "country"   "gdpPercap" "lifeExp"   "pop"       "year"
-```
-
-```r
-hist(afri$lifeExp,breaks = 12, col="grey", xlab = "LifeExpectency ", main="Life expectency distribution of Africa")
+gapminder %>% 
+  filter(country=="Canada") %>% 
+  ggplot(aes(year, gdpPercap))+
+  geom_line()+
+  xlab("Year")+
+  ylab("GDPpercap")+
+  ggtitle("GDPpercap tendency of Cananda")
 ```
 
 ![](hw02-gapminder_files/figure-html/unnamed-chunk-4-5.png)<!-- -->
+
+```r
+# The distribution of Lifeexp of ASIA
+asia<- filter(gapminder, continent=="Asia")
+
+hist(asia$lifeExp,breaks = 12, col="grey", xlab = "LifeExpectency ", main="Life expectency distribution of Asia")
+```
+
+![](hw02-gapminder_files/figure-html/unnamed-chunk-4-6.png)<!-- -->
+
+```r
+gapminder %>% 
+  filter(continent=="Asia") %>% 
+  ggplot(aes(lifeExp))+
+  geom_histogram()+
+  xlab("LifeExpectency")+
+  ylab("count")+
+  ggtitle("Life expectency distribution of Asia")
+```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+![](hw02-gapminder_files/figure-html/unnamed-chunk-4-7.png)<!-- -->
+
+```r
+gapminder %>% 
+  filter(continent=="Asia") %>% 
+  ggplot(aes(lifeExp))+
+  geom_density(fill="light blue")+
+  xlab("LifeExpectency")+
+  ylab("Frequency")+
+  ggtitle("Life expectency distribution of Asia")
+```
+
+![](hw02-gapminder_files/figure-html/unnamed-chunk-4-8.png)<!-- -->
+
+```r
+# Boxplot of different continents populations
+ggplot(gapminder, aes(x=continent, y= pop))+ 
+  scale_y_log10()+
+  geom_boxplot()
+```
+
+![](hw02-gapminder_files/figure-html/unnamed-chunk-4-9.png)<!-- -->
+
+```r
+ggplot(gapminder, aes(x=continent, y= pop))+ 
+  scale_y_log10()+
+  geom_violin()
+```
+
+![](hw02-gapminder_files/figure-html/unnamed-chunk-4-10.png)<!-- -->
+
+```r
+# Boxplot of different continents GDP
+ggplot(gapminder, aes(x=continent, y= gdpPercap))+ 
+  scale_y_log10()+
+  geom_boxplot()
+```
+
+![](hw02-gapminder_files/figure-html/unnamed-chunk-4-11.png)<!-- -->
+
+```r
+ggplot(gapminder, aes(x=continent, y= gdpPercap))+ 
+  scale_y_log10()+
+  geom_violin()+
+  ggtitle("Density distribution of gdp")
+```
+
+![](hw02-gapminder_files/figure-html/unnamed-chunk-4-12.png)<!-- -->
 
 ###Use filter(), select() and %>%
 
@@ -419,13 +475,75 @@ hist(afri$lifeExp,breaks = 12, col="grey", xlab = "LifeExpectency ", main="Life 
 gapminder %>% 
   select(pop,gdpPercap) %>% 
   filter(pop>2.960e+07 & gdpPercap>1000) %>% 
-  plot(xlab="Population",ylab = "GDPpercap")
+  ggplot(aes(pop, gdpPercap))+
+  geom_point()
 ```
 
 ![](hw02-gapminder_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
 
 ```r
-qplot(gapminder$lifeExp, gapminder$gdpPercap, xlab = "Life expectancy", ylab = "GDPpercap")
+gapminder %>% 
+  filter(continent=="Africa" ) %>% 
+  ggplot(aes(lifeExp))+
+  geom_histogram(bins = 30)+
+  xlab("Africa")+
+  ggtitle("Life Expendency of Africa")
 ```
 
 ![](hw02-gapminder_files/figure-html/unnamed-chunk-5-2.png)<!-- -->
+
+### Things Further
+
+```r
+# This way works but the content is missing
+a<- filter(gapminder,country==c("Rwanda","Afghanistan"))
+a
+```
+
+```
+## # A tibble: 12 x 6
+##    country     continent  year lifeExp      pop gdpPercap
+##    <fctr>      <fctr>    <int>   <dbl>    <int>     <dbl>
+##  1 Afghanistan Asia       1957    30.3  9240934       821
+##  2 Afghanistan Asia       1967    34.0 11537966       836
+##  3 Afghanistan Asia       1977    38.4 14880372       786
+##  4 Afghanistan Asia       1987    40.8 13867957       852
+##  5 Afghanistan Asia       1997    41.8 22227415       635
+##  6 Afghanistan Asia       2007    43.8 31889923       975
+##  7 Rwanda      Africa     1952    40.0  2534927       493
+##  8 Rwanda      Africa     1962    43.0  3051242       597
+##  9 Rwanda      Africa     1972    44.6  3992121       591
+## 10 Rwanda      Africa     1982    46.2  5507565       882
+## 11 Rwanda      Africa     1992    23.6  7290203       737
+## 12 Rwanda      Africa     2002    43.4  7852401       786
+```
+
+```r
+# The correct way of filter out this
+b<- gapminder %>% 
+    filter(country=="Rwanda"|country=="Afghanistan")
+b
+```
+
+```
+## # A tibble: 24 x 6
+##    country     continent  year lifeExp      pop gdpPercap
+##    <fctr>      <fctr>    <int>   <dbl>    <int>     <dbl>
+##  1 Afghanistan Asia       1952    28.8  8425333       779
+##  2 Afghanistan Asia       1957    30.3  9240934       821
+##  3 Afghanistan Asia       1962    32.0 10267083       853
+##  4 Afghanistan Asia       1967    34.0 11537966       836
+##  5 Afghanistan Asia       1972    36.1 13079460       740
+##  6 Afghanistan Asia       1977    38.4 14880372       786
+##  7 Afghanistan Asia       1982    39.9 12881816       978
+##  8 Afghanistan Asia       1987    40.8 13867957       852
+##  9 Afghanistan Asia       1992    41.7 16317921       649
+## 10 Afghanistan Asia       1997    41.8 22227415       635
+## # ... with 14 more rows
+```
+
+
+
+
+
+

@@ -8,27 +8,29 @@ output:
 ---
 
 ###Bring data package gapminder and tidyverse meta-package in
-```{r}
-library(gapminder)
+```{r warning=FALSE}
+# Load data and function package
 library(tidyverse)
-library(ggplot2)
+library(gapminder)
 ```
 
 
 ###Smell test the data
 
-```{r}
-
+```{r warning=FALSE}
+# Type of whole data set 
 typeof(gapminder)
-head(gapminder)
-str(gapminder)
-summary(gapminder)
+
+# Class information of gapminder
+ls(gapminder)
+
+# Column and row length of gapminder showing in two ways
 ncol(gapminder)
 nrow(gapminder)
 length(gapminder)
 length(gapminder$country)
-ls(gapminder)
 
+# Data type of each variable
 typeof(gapminder$country)
 typeof(gapminder$continent)
 typeof(gapminder$year)
@@ -36,32 +38,42 @@ typeof(gapminder$lifeExp)
 typeof(gapminder$pop)
 typeof(gapminder$gdpPercap)
 
+# Basic information of gapminder data set
+head(gapminder)
+str(gapminder)
+summary(gapminder)
+
+
+
+
+
 ```
 
 
 ###Individual variables
 ```{r}
+# range and size information of class-year
 ye<- gapminder$year
 range(ye)
 length(ye)
 summary(ye)
 arrange(gapminder,year)
-
+# range and size information of life-year
 life<- gapminder$lifeExp
 range(life)
 length(life)
 summary(life)
-
+# range and size information of class-population
 po<- gapminder$pop
 range(po)
 length(po)
 summary(po)
-
+# range and size information of class-gdp
 gdp<-gapminder$gdpPercap
 range(gdp)
 length(gdp)
 summary(gdp)
-
+# Distribution of lifeExp and gdpPercap
 hist(gapminder$lifeExp, breaks = 12, col="grey", xlab = "LifeExpectency", main="Life expectency distribution")
 
 hist(gapminder$gdpPercap, breaks = 12, col = "light blue", xlab = "GDP per Cap", main = "GDPpercap distribution")
@@ -73,20 +85,77 @@ hist(gapminder$gdpPercap, breaks = 12, col = "light blue", xlab = "GDP per Cap",
 ###Explore various plot types
 
 ```{r}
+# Relation between lifeExp and gdpPercap
+ggplot(gapminder, aes(gdpPercap, lifeExp))+
+  geom_point()+
+  xlab("GDPpercap")+
+  ylab("LifeExp")+
+  ggtitle("Scatter plot of GDP versus LifeExp")
 
-plot(gapminder$gdpPercap, gapminder$lifeExp, xlab ="GDPperCap", ylab = "Life Expectency", main="Scatter plot of GDPper and LifeExp")
+
+
+
+# Two ways of Filter out Canada and analysis on data of Canada 
+# Way one: Scatter plot
 can<- filter(gapminder, country=="Canada")
 plot(can$year,can$lifeExp, xlab = "Year", ylab = "Life expectancy", main = "Life expectancy tendency of Canada")
 
 plot(can$year,can$gdpPercap, xlab = "Year", ylab = "GDPperCap", main = "GDPpercap tendency of Canada")
+# Way two
+gapminder %>% 
+  filter(country=="Canada") %>% 
+  ggplot(aes(year, lifeExp))+
+  geom_point()+
+  xlab("Year")+
+  ylab("LifeExp")+
+  ggtitle("Life Expentancy tendency of Cananda")
+gapminder %>% 
+  filter(country=="Canada") %>% 
+  ggplot(aes(year, gdpPercap))+
+  geom_line()+
+  xlab("Year")+
+  ylab("GDPpercap")+
+  ggtitle("GDPpercap tendency of Cananda")
 
+
+# The distribution of Lifeexp of ASIA
 asia<- filter(gapminder, continent=="Asia")
 
 hist(asia$lifeExp,breaks = 12, col="grey", xlab = "LifeExpectency ", main="Life expectency distribution of Asia")
+gapminder %>% 
+  filter(continent=="Asia") %>% 
+  ggplot(aes(lifeExp))+
+  geom_histogram()+
+  xlab("LifeExpectency")+
+  ylab("count")+
+  ggtitle("Life expectency distribution of Asia")
 
-afri<- filter(gapminder,continent=="Africa")
-ls(afri)
-hist(afri$lifeExp,breaks = 12, col="grey", xlab = "LifeExpectency ", main="Life expectency distribution of Africa")
+gapminder %>% 
+  filter(continent=="Asia") %>% 
+  ggplot(aes(lifeExp))+
+  geom_density(fill="light blue")+
+  xlab("LifeExpectency")+
+  ylab("Frequency")+
+  ggtitle("Life expectency distribution of Asia")
+
+# Boxplot of different continents populations
+ggplot(gapminder, aes(x=continent, y= pop))+ 
+  scale_y_log10()+
+  geom_boxplot()
+ggplot(gapminder, aes(x=continent, y= pop))+ 
+  scale_y_log10()+
+  geom_violin()
+
+# Boxplot of different continents GDP
+ggplot(gapminder, aes(x=continent, y= gdpPercap))+ 
+  scale_y_log10()+
+  geom_boxplot()
+ggplot(gapminder, aes(x=continent, y= gdpPercap))+ 
+  scale_y_log10()+
+  geom_violin()+
+  ggtitle("Density distribution of gdp")
+
+
 ```
 
 ###Use filter(), select() and %>%
@@ -96,12 +165,35 @@ hist(afri$lifeExp,breaks = 12, col="grey", xlab = "LifeExpectency ", main="Life 
 gapminder %>% 
   select(pop,gdpPercap) %>% 
   filter(pop>2.960e+07 & gdpPercap>1000) %>% 
-  plot(xlab="Population",ylab = "GDPpercap")
+  ggplot(aes(pop, gdpPercap))+
+  geom_point()
 
 
-qplot(gapminder$lifeExp, gapminder$gdpPercap, xlab = "Life expectancy", ylab = "GDPpercap")
-  
+gapminder %>% 
+  filter(continent=="Africa" ) %>% 
+  ggplot(aes(lifeExp))+
+  geom_histogram(bins = 30)+
+  xlab("Africa")+
+  ggtitle("Life Expendency of Africa")
 
 
 
 ```
+
+### Things Further
+```{r}
+# This way works but the content is missing
+a<- filter(gapminder,country==c("Rwanda","Afghanistan"))
+a
+# The correct way of filter out this
+b<- gapminder %>% 
+    filter(country=="Rwanda"|country=="Afghanistan")
+b
+
+```
+
+
+
+
+
+
